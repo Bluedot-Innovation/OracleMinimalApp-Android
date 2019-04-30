@@ -1,0 +1,64 @@
+<?xml version="1.0" encoding="utf-8"?>
+<manifest xmlns:android="http://schemas.android.com/apk/res/android"
+    package="au.com.bluedot.oracleminimalintegration">
+    <uses-permission android:name="au.com.bluedot.oracleminimalintegration.permission.RSYS_SHOW_IAM"/>
+
+    <permission
+        android:name="au.com.bluedot.oracleminimalintegration.permission.RSYS_SHOW_IAM"
+        android:protectionLevel="signature" />
+
+    <uses-permission android:name="au.com.bluedot.oracleminimalintegration.permission.C2D_MESSAGE" />
+    <uses-permission android:name="com.google.android.c2dm.permission.RECEIVE" />
+    <uses-permission android:name="android.permission.WAKE_LOCK" />
+    <uses-permission android:name="android.permission.INTERNET"/>
+
+    <permission android:name="au.com.bluedot.oracleminimalintegration.permission.C2D_MESSAGE" android:protectionLevel="signature" />
+
+    <!-- Permission for your app to handle push notifications -->
+    <permission android:name="au.com.bluedot.oracleminimalintegration.permission.PUSHIO_MESSAGE" android:protectionLevel="signature"/>
+    <uses-permission android:name="au.com.bluedot.oracleminimalintegration.permission.PUSHIO_MESSAGE"/>
+
+    <!-- Optional permission -->
+    <uses-permission android:name="android.permission.ACCESS_FINE_LOCATION" />
+
+    <application
+        android:allowBackup="true"
+        android:name="au.com.bluedot.oracleminimalintegration.MainApplication"
+        android:icon="@mipmap/ic_launcher"
+        android:label="@string/app_name"
+        android:roundIcon="@mipmap/ic_launcher_round"
+        android:supportsRtl="true"
+        android:theme="@style/AppTheme">
+        <activity android:name=".MainActivity">
+            <intent-filter>
+                <action android:name="android.intent.action.MAIN" />
+                <category android:name="android.intent.category.LAUNCHER" />
+                <action android:name="au.com.bluedot.oracleminimalintegratio.NOTIFICATIONPRESSED"/>
+                <category android:name="android.intent.category.DEFAULT"/>
+            </intent-filter>
+        </activity>
+        <activity android:name=".RequestPermissionActivity" />
+
+        <activity
+            android:name="com.pushio.manager.iam.ui.PushIOMessageViewActivity"
+            android:theme="@android:style/Theme.Translucent.NoTitleBar"
+            android:permission="au.com.bluedot.oracleminimalintegratio.permission.RSYS_SHOW_IAM">
+            <intent-filter>
+                <action android:name="android.intent.action.VIEW" />
+                <category android:name="android.intent.category.BROWSABLE" />
+                <category android:name="android.intent.category.DEFAULT" />
+                <data android:scheme="pio-au.com.bluedot.oracleminimalintegration" />
+            </intent-filter>
+        </activity>
+
+        <receiver android:name="com.pushio.manager.PushIOBroadcastReceiver"
+            android:permission="com.google.android.c2dm.permission.SEND">
+            <intent-filter>
+                <action  android:name="com.google.android.c2dm.intent.RECEIVE" />
+                <action android:name="com.google.android.c2dm.intent.REGISTRATION" />
+                <category android:name="au.com.bluedot.oracleminimalintegration" />
+            </intent-filter>
+        </receiver>
+    </application>
+
+</manifest>
