@@ -25,7 +25,8 @@ import au.com.bluedot.point.net.engine.GeoTriggeringStatusListener;
 import au.com.bluedot.point.net.engine.InitializationResultListener;
 import au.com.bluedot.point.net.engine.ServiceManager;
 
-import static android.app.Notification.PRIORITY_MAX;
+import static androidx.core.app.NotificationCompat.PRIORITY_MAX;
+
 
 /*
  * @author Bluedot Innovation
