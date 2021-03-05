@@ -24,7 +24,7 @@ public class MainActivity extends Activity implements View.OnClickListener{
 
     private void initUI() {
 
-        bStopSDK = (Button) findViewById(R.id.bStopSDK);
+        bStopSDK = findViewById(R.id.bStopSDK);
 
         bStopSDK.setOnClickListener(this);
     }
@@ -37,11 +37,8 @@ public class MainActivity extends Activity implements View.OnClickListener{
     @Override
     public void onClick(View v) {
         int ID = v.getId();
-        switch (ID){
-            case R.id.bStopSDK:
-                stopSDK();
-                break;
-
+        if (ID == R.id.bStopSDK) {
+            stopSDK();
         }
     }
 
