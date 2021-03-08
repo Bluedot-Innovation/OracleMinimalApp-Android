@@ -11,6 +11,7 @@ import com.pushio.manager.PushIOManager;
 
 import org.jetbrains.annotations.NotNull;
 
+import java.util.Date;
 import java.util.List;
 
 import au.com.bluedot.point.net.engine.GeoTriggeringEventReceiver;
@@ -23,11 +24,15 @@ public class BluedotGeoTriggerReceiver extends GeoTriggeringEventReceiver {
 
     @Override
     public void onZoneInfoUpdate(@NotNull List<ZoneInfo> list, @NotNull Context context) {
-
+        Log.i(TAG, "Zones updated at: " + new Date().toString()
+                + " ZoneInfos count: " + list.size());
     }
 
     @Override
     public void onZoneEntryEvent(@NotNull ZoneEntryEvent zoneEntryEvent, @NotNull Context context) {
+        Log.i(TAG, "Zones entered at: " + new Date().toString()
+                + " Zone name:" + zoneEntryEvent.toString());
+
         //Building GeoRegion  with Fence details
         PIOGeoRegion geoRegion= new PIOGeoRegion();
         geoRegion.setGeofenceId(zoneEntryEvent.getFenceInfo().getId());
@@ -51,6 +56,9 @@ public class BluedotGeoTriggerReceiver extends GeoTriggeringEventReceiver {
 
     @Override
     public void onZoneExitEvent(@NotNull ZoneExitEvent zoneExitEvent, @NotNull Context context) {
+        Log.i(TAG, "Zones exited at: " + new Date().toString()
+                + " Zone name:" + zoneExitEvent.toString());
+
         //Building GeoRegion with Fence details
         PIOGeoRegion geoRegion= new PIOGeoRegion();
         geoRegion.setGeofenceId(zoneExitEvent.getFenceInfo().getId());
