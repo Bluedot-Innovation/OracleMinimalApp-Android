@@ -27,7 +27,7 @@ public class MainApplication extends Application implements InitializationResult
 
     ServiceManager mServiceManager;
 
-    private final String projectId = "e3eb0689-5a35-4114-8273-85ba12084564"; //Project ID// for the App 
+    private final String projectId = ""; //Project ID// for the App 
 
 
     @Override

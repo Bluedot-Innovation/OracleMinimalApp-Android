@@ -4,9 +4,6 @@ import android.content.Context;
 import android.util.Log;
 
 import com.pushio.manager.PIOGeoRegion;
-import com.pushio.manager.PIORegionCompletionListener;
-import com.pushio.manager.PIORegionEventType;
-import com.pushio.manager.PIORegionException;
 import com.pushio.manager.PushIOManager;
 
 import org.jetbrains.annotations.NotNull;
@@ -42,14 +39,11 @@ public class BluedotGeoTriggerReceiver extends GeoTriggeringEventReceiver {
         geoRegion.setSource("Bluedot SDK");
 
         //Reporting Checkin to Responsys
-        PushIOManager.getInstance(context).onGeoRegionEntered
-                (geoRegion, new PIORegionCompletionListener() {
-                    @Override
-                    public void onRegionReported(String s, PIORegionEventType pioRegionEventType, PIORegionException e) {
-                        Log.i(TAG,"onGeoRegionEntered  pioRegionEventType"+pioRegionEventType);
-                        if(e != null) {
-                            Log.i(TAG, "onGeoRegionEntered PIORegionException" + e.getErrorMessage() + "###" + e.getErrorDescription());
-                        }
+        PushIOManager.getInstance(context).onGeoRegionEntered(geoRegion,
+                (s, pioRegionEventType, e) -> {
+                    Log.i(TAG,"onGeoRegionEntered  pioRegionEventType"+pioRegionEventType);
+                    if(e != null) {
+                        Log.i(TAG, "onGeoRegionEntered PIORegionException" + e.getErrorMessage() + "###" + e.getErrorDescription());
                     }
                 });
     }
@@ -69,12 +63,7 @@ public class BluedotGeoTriggerReceiver extends GeoTriggeringEventReceiver {
         geoRegion.setSource("Bluedot SDK");
 
         //Reporting Checkout to Responsys
-        PushIOManager.getInstance(context).onGeoRegionExited
-                (geoRegion, new PIORegionCompletionListener() {
-                    @Override
-                    public void onRegionReported(String s, PIORegionEventType pioRegionEventType, PIORegionException e) {
-                        Log.i(TAG,"onGeoRegionExited "+s);
-                    }
-                });
+        PushIOManager.getInstance(context).onGeoRegionExited(geoRegion,
+                (s, pioRegionEventType, e) -> Log.i(TAG,"onGeoRegionExited "+s));
     }
 }
