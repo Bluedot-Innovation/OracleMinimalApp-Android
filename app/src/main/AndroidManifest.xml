@@ -51,6 +51,22 @@
             </intent-filter>
         </activity>
 
+        <receiver android:name=".BluedotErrorReceiver"
+            android:exported="false"
+            android:enabled="true">
+            <intent-filter>
+                <action android:name="io.bluedot.point.SERVICE" />
+            </intent-filter>
+        </receiver>
+
+        <receiver android:name=".BluedotGeoTriggerReceiver"
+            android:enabled="true"
+            android:exported="false">
+            <intent-filter>
+                <action android:name="io.bluedot.point.GEOTRIGGER" />
+            </intent-filter>
+        </receiver>
+
         <receiver android:name="com.pushio.manager.PushIOBroadcastReceiver"
             android:permission="com.google.android.c2dm.permission.SEND">
             <intent-filter>
