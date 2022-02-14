@@ -2,7 +2,7 @@ apply plugin: 'com.android.application'
 apply plugin: 'com.google.gms.google-services'
 
 android {
-    compileSdkVersion 30
+    compileSdkVersion 31
     defaultConfig {
         applicationId "au.com.bluedot.oracleminimalintegration"
         minSdkVersion 26
@@ -26,12 +26,14 @@ android {
 }
 
 dependencies {
-    implementation fileTree(dir: 'libs', include: ['PushIOManager.aar'])
-    implementation 'androidx.appcompat:appcompat:1.2.0'
+    implementation fileTree(dir: 'libs', include: ['PushIOManager-6.51.aar'])
+    implementation 'androidx.appcompat:appcompat:1.4.1'
     implementation 'com.android.support.constraint:constraint-layout:2.0.4'
-    implementation 'com.gitlab.bluedotio.android:point_sdk_android:15.3.1'
-    implementation 'com.google.firebase:firebase-core:18.0.2'
-    implementation 'com.google.firebase:firebase-messaging:21.0.1'
+    implementation 'com.gitlab.bluedotio.android:point_sdk_android:15.4.0'
+    implementation 'com.google.firebase:firebase-core:20.1.0'
+    implementation 'com.google.firebase:firebase-messaging:23.0.0'
+    implementation 'com.google.android.gms:play-services-base:18.0.1'
+    implementation 'androidx.core:core:1.7.0'
 
     testImplementation 'junit:junit:4.13.2'
     androidTestImplementation 'com.android.support.test:runner:1.0.2'
