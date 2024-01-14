@@ -29,7 +29,7 @@
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
-        <activity android:name=".MainActivity">
+        <activity android:name=".MainActivity" android:exported="true">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
                 <category android:name="android.intent.category.LAUNCHER" />
@@ -37,9 +37,10 @@
                 <category android:name="android.intent.category.DEFAULT"/>
             </intent-filter>
         </activity>
-        <activity android:name=".RequestPermissionActivity" />
+        <activity android:name=".RequestPermissionActivity" android:exported="true"/>
 
         <activity
+            android:exported="true"
             android:name="com.pushio.manager.iam.ui.PushIOMessageViewActivity"
             android:theme="@android:style/Theme.Translucent.NoTitleBar"
             android:permission="au.com.bluedot.oracleminimalintegratio.permission.RSYS_SHOW_IAM">
@@ -68,6 +69,7 @@
         </receiver>
 
         <receiver android:name="com.pushio.manager.PushIOBroadcastReceiver"
+            android:exported="false"
             android:permission="com.google.android.c2dm.permission.SEND">
             <intent-filter>
                 <action  android:name="com.google.android.c2dm.intent.RECEIVE" />
