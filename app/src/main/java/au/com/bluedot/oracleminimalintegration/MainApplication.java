@@ -44,26 +44,22 @@ public class MainApplication extends Application implements InitializationResult
     }
 
     public void initPointSDK() {
-
         int checkPermissionCoarse = ActivityCompat.checkSelfPermission(getApplicationContext(), Manifest.permission.ACCESS_COARSE_LOCATION);
         int checkPermissionFine = ActivityCompat.checkSelfPermission(getApplicationContext(), Manifest.permission.ACCESS_FINE_LOCATION);
 
-        if(checkPermissionCoarse == PackageManager.PERMISSION_GRANTED && checkPermissionFine == PackageManager.PERMISSION_GRANTED) {
+        if (checkPermissionCoarse == PackageManager.PERMISSION_GRANTED && checkPermissionFine == PackageManager.PERMISSION_GRANTED) {
             mServiceManager = ServiceManager.getInstance(this);
 
-            if(!mServiceManager.isBlueDotPointServiceRunning()) {
+            if (!mServiceManager.isBluedotServiceInitialized()) {
                 mServiceManager.initialize(projectId, this);
             }
-        }
-        else
-        {
+        } else {
             requestPermissions();
         }
 
     }
 
     private void requestPermissions() {
-
         Intent intent = new Intent(getApplicationContext(), RequestPermissionActivity.class);
         intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
         startActivity(intent);
@@ -71,7 +67,7 @@ public class MainApplication extends Application implements InitializationResult
 
     @Override
     public void onInitializationFinished(@Nullable BDError bdError) {
-        if (bdError != null){
+        if (bdError != null) {
             Toast.makeText(getApplicationContext(),
                     "Bluedot Initialization Error " + bdError.getReason(),
                     Toast.LENGTH_LONG).show();

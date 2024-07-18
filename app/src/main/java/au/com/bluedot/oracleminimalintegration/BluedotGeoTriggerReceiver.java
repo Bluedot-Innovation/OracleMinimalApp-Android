@@ -5,6 +5,7 @@ import android.util.Log;
 
 import com.pushio.manager.PIOGeoRegion;
 import com.pushio.manager.PushIOManager;
+import com.pushio.manager.exception.PIOInitException;
 
 import org.jetbrains.annotations.NotNull;
 
@@ -12,58 +13,66 @@ import java.util.Date;
 import java.util.List;
 
 import au.com.bluedot.point.net.engine.GeoTriggeringEventReceiver;
-import au.com.bluedot.point.net.engine.ZoneEntryEvent;
-import au.com.bluedot.point.net.engine.ZoneExitEvent;
-import au.com.bluedot.point.net.engine.ZoneInfo;
+import au.com.bluedot.point.net.engine.ServiceManager;
+import au.com.bluedot.point.net.engine.event.NotificationZoneInfo;
+import au.com.bluedot.point.net.engine.event.GeoTriggerEvent;
 
 public class BluedotGeoTriggerReceiver extends GeoTriggeringEventReceiver {
     private final String TAG = "BluedotApp";
 
     @Override
-    public void onZoneInfoUpdate(@NotNull List<ZoneInfo> list, @NotNull Context context) {
+    public void onZoneInfoUpdate(@NotNull Context context) {
         Log.i(TAG, "Zones updated at: " + new Date().toString()
-                + " ZoneInfos count: " + list.size());
+                + " ZoneInfos count: " + ServiceManager.getInstance(context).getZonesAndFences().size());
     }
 
     @Override
-    public void onZoneEntryEvent(@NotNull ZoneEntryEvent zoneEntryEvent, @NotNull Context context) {
+    public void onZoneEntryEvent(@NotNull GeoTriggerEvent zoneEntryEvent, @NotNull Context context) {
         Log.i(TAG, "Zones entered at: " + new Date().toString()
-                + " Zone name:" + zoneEntryEvent.toString());
+                + " Zone name:" + zoneEntryEvent.getZoneInfo().getName());
 
         //Building GeoRegion  with Fence details
         PIOGeoRegion geoRegion= new PIOGeoRegion();
-        geoRegion.setGeofenceId(zoneEntryEvent.getFenceInfo().getId());
-        geoRegion.setGeofenceName(zoneEntryEvent.getFenceInfo().getName());
-        geoRegion.setZoneId(zoneEntryEvent.getZoneInfo().getZoneId());
-        geoRegion.setZoneName(zoneEntryEvent.getZoneInfo().getZoneName());
+        geoRegion.setGeofenceId(zoneEntryEvent.entryEvent().getFenceId().toString());
+        geoRegion.setGeofenceName(zoneEntryEvent.entryEvent().getFenceName());
+        geoRegion.setZoneId(zoneEntryEvent.getZoneInfo().getId().toString());
+        geoRegion.setZoneName(zoneEntryEvent.getZoneInfo().getName());
         geoRegion.setSource("Bluedot SDK");
 
         //Reporting Checkin to Responsys
-        PushIOManager.getInstance(context).onGeoRegionEntered(geoRegion,
-                (s, pioRegionEventType, e) -> {
-                    Log.i(TAG,"onGeoRegionEntered  pioRegionEventType"+pioRegionEventType);
-                    if(e != null) {
-                        Log.i(TAG, "onGeoRegionEntered PIORegionException" + e.getErrorMessage() + "###" + e.getErrorDescription());
-                    }
-                });
+        try {
+            PushIOManager.sharedInstance(context).onGeoRegionEntered(geoRegion,
+                    (s, pioRegionEventType, e) -> {
+                        Log.i(TAG, "onGeoRegionEntered  pioRegionEventType" + pioRegionEventType);
+                        if (e != null) {
+                            Log.i(TAG, "onGeoRegionEntered PIORegionException" + e.getErrorMessage() + "###" + e.getErrorDescription());
+                        }
+                    });
+        } catch(PIOInitException error) {
+            //Error
+        }
     }
 
     @Override
-    public void onZoneExitEvent(@NotNull ZoneExitEvent zoneExitEvent, @NotNull Context context) {
+    public void onZoneExitEvent(@NotNull GeoTriggerEvent zoneExitEvent, @NotNull Context context) {
         Log.i(TAG, "Zones exited at: " + new Date().toString()
-                + " Zone name:" + zoneExitEvent.toString());
+                + " Zone name:" + zoneExitEvent.getZoneInfo().getName());
 
         //Building GeoRegion with Fence details
         PIOGeoRegion geoRegion= new PIOGeoRegion();
-        geoRegion.setGeofenceId(zoneExitEvent.getFenceInfo().getId());
-        geoRegion.setGeofenceName(zoneExitEvent.getFenceInfo().getName());
-        geoRegion.setDwellTime(zoneExitEvent.getDwellTime());
-        geoRegion.setZoneId(zoneExitEvent.getZoneInfo().getZoneId());
-        geoRegion.setZoneName(zoneExitEvent.getZoneInfo().getZoneName());
+        geoRegion.setGeofenceId(zoneExitEvent.exitEvent().getFenceId().toString());
+        geoRegion.setGeofenceName(zoneExitEvent.exitEvent().getFenceName());
+        geoRegion.setDwellTime((int)zoneExitEvent.exitEvent().getDwellTime());
+        geoRegion.setZoneId(zoneExitEvent.getZoneInfo().getId().toString());
+        geoRegion.setZoneName(zoneExitEvent.getZoneInfo().getName());
         geoRegion.setSource("Bluedot SDK");
 
         //Reporting Checkout to Responsys
-        PushIOManager.getInstance(context).onGeoRegionExited(geoRegion,
-                (s, pioRegionEventType, e) -> Log.i(TAG,"onGeoRegionExited "+s));
+        try {
+            PushIOManager.sharedInstance(context).onGeoRegionExited(geoRegion,
+                    (s, pioRegionEventType, e) -> Log.i(TAG, "onGeoRegionExited " + s));
+        } catch(PIOInitException error) {
+            //Error
+        }
     }
 }

@@ -28,7 +28,7 @@ dependencies {
     implementation fileTree(dir: 'libs', include: ['PushIOManager-6.56.2.aar'])
     implementation 'androidx.appcompat:appcompat:1.6.1'
     implementation 'com.android.support.constraint:constraint-layout:2.0.4'
-    implementation 'com.gitlab.bluedotio.android:point_sdk_android:15.6.1'
+    implementation 'com.gitlab.bluedotio.android:point_sdk_android:16.0.0'
     implementation 'com.google.firebase:firebase-core:21.1.1'
     implementation 'com.google.firebase:firebase-messaging:23.4.0'
     implementation 'com.google.android.gms:play-services-base:18.3.0'
